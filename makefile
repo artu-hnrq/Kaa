@@ -1,5 +1,5 @@
 b build: clean
-	python3 setup.py dist
+	python3 snake.py dist
 
 i install:
 	pip3 install .
@@ -15,5 +15,5 @@ p publish: build
 
 
 clean:
-	python3 setup.py clean --all
+	python3 snake.py clean --all
 	rm -fr dist

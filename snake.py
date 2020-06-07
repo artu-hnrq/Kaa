@@ -1,6 +1,9 @@
 import setuptools
 
 setuptools.setup(
+    name = 'kaa',
+    version = '0.0.1',
+
     install_requires = [
         'pip >= 20.1.1',
         'setuptools >= 47.1.1',
@@ -15,4 +18,7 @@ setuptools.setup(
             'kaa = kaa.snake:rattle'
         ],
     },
+
+    packages = setuptools.find_packages(where = 'src'),
+    package_dir = {'': 'src'},
 )
