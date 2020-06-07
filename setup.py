@@ -8,5 +8,11 @@ setuptools.setup(
         'twine >= 3.1.1'
     ],
 
-    python_requires = '>=3.8.2'
+    python_requires = '>=3.8.2',
+
+    entry_points={
+        'console_scripts': [
+            'kaa = kaa.snake:rattle'
+        ],
+    },
 )

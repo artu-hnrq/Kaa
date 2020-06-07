@@ -1,5 +1,3 @@
-c compile: build install
-
 b build: clean
 	python3 setup.py dist
 
