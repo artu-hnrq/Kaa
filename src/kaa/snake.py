@@ -1,45 +1,47 @@
-import git
 import setuptools
+import setuptools.command.build_py
+import distutils
+import git
 import os
-import pkg_resources as pkg
-
+from . import utils
 
 
 setup = {
-    entry_point.name: entry_point.load()()
-    for entry_point
-    in pkg.iter_entry_points('kaa.defaults')
+    attr: func()
+    for attr, func
+    in utils.package_discovery('kaa.defaults').items()
 }
 
-print(setup)
-
 def rattle():
-
 	return setuptools.setup(
 		**setup,
 
-		entry_points={
-	        'console_scripts': [
-	            'kaa = kaa.snake:rattle'
-	        ],
-
-			'kaa.defaults': [
-				'name = kaa.viper:name',
-				'version = kaa.viper:version',
-				'description = kaa.viper:summary',
-				'long_description = kaa.viper:description',
-				'long_description_content_type = kaa.viper:description_type',
-				'license = kaa.viper:license',
-				'platforms = kaa.viper:any_platform',
-				'author = kaa.viper:author',
-				'author_email = kaa.viper:email',
-				'url = kaa.viper:repository_url',
-				'python_requires = kaa.viper:python_version',
-				'packages = kaa.viper:packages',
-				'package_dir = kaa.viper:package_dir',
-			]
-	    }
+		cmdclass={
+            'build_py': BuildPyCommand,
+            'venom': VenomCommand,
+        }
 
 	)
 
-rattle()
+class BuildPyCommand(setuptools.command.build_py.build_py):
+    def run(self):
+        self.run_command('venom')
+        setuptools.command.build_py.build_py.run(self)
+
+
+class VenomCommand(distutils.cmd.Command):
+    # description = 'run Pylint on Python source files'
+    user_options = [
+      # The format is (long option, short option, description).
+    ]
+
+    def initialize_options(self):
+        self.venom = utils.package_discovery('kaa.venom')
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        for key, func  in self.venom.items():
+            print('running venom:', key)
+            func()

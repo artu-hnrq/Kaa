@@ -4,8 +4,7 @@
 [![License](https://img.shields.io/github/license/artu-hnrq/kaa)][License]
 [![PyPI](https://img.shields.io/pypi/v/kaa?color=blue)][PyPI]
 
-[Kaa is a huge and powerful snake][Wikipedia].
-A true python for empowering package development, deployment and publication flow
+[Kaa is a huge and powerful snake][Wikipedia]. <!-- summary --> A true python for empowering package development, deployment and publication flow
 
 This module proposes a command line interface to supply a premounted `setuptools.setup()` call, providing user-level package distribution configuration and other repository manipulation facilities
 

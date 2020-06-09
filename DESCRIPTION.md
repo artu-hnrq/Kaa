@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/artu-hnrq/kaa)][License]
 [![PyPI](https://img.shields.io/pypi/v/kaa?color=blue)][PyPI]
 
-A true python for empowering package development, deployment and publication flow   
+<!-- summary --> A true python for empowering package development, deployment and publication flow
 
 This module proposes a command line interface to supply a premounted `setuptools.setup()` call, providing user-level package distribution configuration and other repository manipulation facilities
 
