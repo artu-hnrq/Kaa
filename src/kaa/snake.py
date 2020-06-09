@@ -1,65 +1,45 @@
 import git
 import setuptools
 import os
+import pkg_resources as pkg
 
-HOME = os.environ['HOME']
+
+
+setup = {
+    entry_point.name: entry_point.load()()
+    for entry_point
+    in pkg.iter_entry_points('kaa.defaults')
+}
+
+print(setup)
 
 def rattle():
-	# Project
-	repository = git.Repo()
-
-	name = repository.description
-
-	for line in open(f"src/kaa/__init__.py").read().splitlines():
-		if line.startswith('__version__'):
-			version = line.split('=')[1][1:].strip("'")
-
-	# Author
-	gitconfig = git.GitConfigParser(f"{HOME}/.gitconfig")
-
-	author = gitconfig.get('user', 'name')
-	author_email = f'"{author}" <{gitconfig.get("user", "email")}>'
-
-	# Description
-	summary = None
-	long_description = open('DESCRIPTION.md').read()
-
-	# License
-	license = open('LICENSE').read().splitlines()[0]
-
-	# Code
-	packages = setuptools.find_packages(where = 'src')
-
-	# Python version
-	import platform
-
-
 
 	return setuptools.setup(
-		name = name,
-		version = version,
-
-		author = f"{author}",
-		author_email = f'"{author}" <{author_email}>',
-
-		long_description = long_description,
-		long_description_content_type = 'text/markdown',
-
-		license = license,
-		# license_file = 'LICENSE',
-
-		packages = packages,
-		package_dir = {'': 'src'},
-
-		python_requires = f">={platform.python_version()}",
-
-		platforms = 'ANY',
+		**setup,
 
 		entry_points={
 	        'console_scripts': [
 	            'kaa = kaa.snake:rattle'
 	        ],
-	    },
+
+			'kaa.defaults': [
+				'name = kaa.viper:name',
+				'version = kaa.viper:version',
+				'description = kaa.viper:summary',
+				'long_description = kaa.viper:description',
+				'long_description_content_type = kaa.viper:description_type',
+				'license = kaa.viper:license',
+				'platforms = kaa.viper:any_platform',
+				'author = kaa.viper:author',
+				'author_email = kaa.viper:email',
+				'url = kaa.viper:repository_url',
+				'python_requires = kaa.viper:python_version',
+				'packages = kaa.viper:packages',
+				'package_dir = kaa.viper:package_dir',
+			]
+	    }
+
 	)
 
 rattle()
