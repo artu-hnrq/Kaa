@@ -1,3 +1,8 @@
+r run: build
+	clear
+	kaa build
+
+
 b build: clean
 	python3 egg.py dist
 

@@ -1,12 +1,14 @@
 import setuptools
 import platform
+import setupcfg
 import git
 
 repository = git.Repo()
+gitconfig = repository.config_reader('global')
 
 # Name
 def name():
-	return repository_url().split('/')[1][:-4]
+	return repository_url().split('/')[1][:-4].capitalize()
 
 # Version
 def version():
@@ -18,7 +20,7 @@ def version():
 
 # Description
 def summary():
-    return None
+    return setupcfg.get('metadata', 'description')
 
 def description():
     return open('DESCRIPTION.md').read()
@@ -35,8 +37,6 @@ def any_platform():
     return 'ANY'
 
 # Author
-gitconfig = repository.config_reader('global')
-
 def author():
     return gitconfig.get('user', 'name')
 
@@ -57,3 +57,7 @@ def packages():
 
 def package_dir():
     return {'': 'src'}
+
+# Other
+def pypi():
+	return "https://pypi.org/project/" + name()

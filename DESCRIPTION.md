@@ -1,13 +1,9 @@
-# Kaa
+## Kaa
+[![](https://img.shields.io/pypi/pyversions/Kaa.svg)](https://pypi.org/project/Kaa/)
+[![](https://img.shields.io/github/license/artu-hnrq/Kaa.svg)](https://github.com/artu-hnrq/Kaa/blob/jungle/LICENSE)
+[![](https://img.shields.io/pypi/v/Kaa.svg)](https://pypi.org/project/Kaa/)
 
-[![Python Version](https://img.shields.io/pypi/pyversions/kaa?color=red)][Python]
-[![License](https://img.shields.io/github/license/artu-hnrq/kaa)][License]
-[![PyPI](https://img.shields.io/pypi/v/kaa?color=blue)][PyPI]
-
-<!-- summary --> A true python for empowering package development, deployment and publication flow
+[Kaa is a huge and powerful snake](https://en.wikipedia.org/wiki/Kaa)
+A true python for empowering package development, deployment and publication flow
 
 This module proposes a command line interface to supply a premounted `setuptools.setup()` call, providing user-level package distribution configuration and other repository manipulation facilities
-
-  [Python]: https://www.python.org/
-  [License]: https://github.com/artu-hnrq/kaa/blob/master/LICENSE
-  [PyPI]: https://pypi.org/project/kaa
