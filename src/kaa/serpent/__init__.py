@@ -1,7 +1,6 @@
-from readme_generator import Readme
 from .. import utils
-from kaa import viper
-import setupcfg
+from readme_generator import Readme
+
 
 
 def flick():
@@ -16,7 +15,7 @@ class Parselmouth(Readme):
         for name, section
         in utils.package_discovery('kaa.sections').items()
     }
-    headers = {'head': viper.name()}
+    headers = {'head': 'Kaa'}
     header_lvl = 2
     locations = ['.']
 

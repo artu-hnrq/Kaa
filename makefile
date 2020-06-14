@@ -1,6 +1,6 @@
 r run: build
 	clear
-	kaa build
+	kaa dist
 
 
 b build: clean

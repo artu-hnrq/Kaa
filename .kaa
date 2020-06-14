@@ -1,0 +1,8 @@
+vocabulary:
+    pypi: https://pypi.org/project/{name}
+    introduction:
+        This module proposes a command line interface to supply a highly configurable premounted `setuptools.setup()` call, providing user-level package distribution configuration and other repository manipulation facilities
+    reference:
+        "[Kaa is a huge and powerful snake](https://en.wikipedia.org/wiki/Kaa)"
+    overview:
+        Kaa is a Python package made to simplify Python packing flow, providing some useful development and deployment features.

@@ -1,13 +1,15 @@
+from . import scales
+from .. import Kaa
 from readme_generator import Readme
 import shields
 import setupcfg
-from kaa import viper
-from . import scales
 
 
 class Parseltongue(type):
+    vocabulary = Kaa().vocabulary()
+
     def __new__(meta, name, bases, attr):
-        """Meta description of class definition"""
+
         attr['order'] = [
             method
             for method in attr
@@ -18,12 +20,16 @@ class Parseltongue(type):
             ]
         ]
         attr['headers'] = {strech: '' for strech in attr['order']}
+        attr['vocabulary'] = meta.vocabulary
         return super(Parseltongue, meta).__new__(meta, name, bases, attr)
 
 
 class Section(Readme, metaclass=Parseltongue):
     def __call__(self):
         return self.render()
+
+    def get_section(self, name):
+       return super(Section, self).get_section(name).format(**self.vocabulary)
 
 
 class Head(Section):
@@ -35,30 +41,26 @@ class Head(Section):
         ])
 
     def introduction(self):
-        return '\n'.join([
-            setupcfg.get('metadata', 'reference'),
-            viper.summary() + '\n',
-            setupcfg.get('metadata', 'introduction'),
-        ])
+        return "{reference}. {description} \n\n {introduction}"
 
 class Overview(Section):
     def purpose(self):
-        return f"{setupcfg.get('metadata', 'overview')} Check [package description](DESCRIPTION.md#kaa) for more information and [examples](DESCRIPTION.md#Example)."
+        return "{overview} Check [package description](DESCRIPTION.md#{name}) for more information and [examples](DESCRIPTION.md#Example)."
 
 
 class Getting_Started(Section):
     def python_version(self):
-        return f"""
+        return """
         Make sure you have the corrected interpreter available:
 
         $ python3 --version
-        python {viper.python_version()}
+        python {python_requires}
 
         """
 
     def pipy(self):
-        return f"""
-        Since, from this version, [pip](https://pip.pypa.io/en/stable/installing/) already comes together with Python, you'll be able to download package [latest release]({viper.pypi()}) available in PyPI:
+        return """
+        Since, from this version, [pip](https://pip.pypa.io/en/stable/installing/) already comes together with Python, you'll be able to download package [latest release]({pypi}) available in PyPI:
 
-        pip3 install {viper.name()}
+        pip3 install {name}
         """
