@@ -15,7 +15,7 @@ class ContextLoader(Methodology):
 
         attr['load'] = classmethod(meta.load)
 
-        for loader in __arrangement__:
+        for name, loader in __arrangement__:
             assert isinstance(loader, ContextLoader) \
                 or issubclass(loader, ContextLoader)
             attr[loader.__name__] = fill_call(loader.load)
@@ -42,15 +42,9 @@ class ContextLoader(Methodology):
     @classmethod
     def fromModule(meta, module):
         class ModuleContext(metaclass=ContextLoader):
-            __arrangement__ = [
-                cls for name, cls
-                in inspect.getmembers(
-                    sys.modules[module],
-                    lambda obj: inspect.isclass(obj)
-                            and isinstance(obj, ContextLoader)
-                            and not obj.__name__.startswith('_')
-                )
-            ]
+            __arrangement__ = library.list_classes(
+                module, _instance = ContextLoader
+            )
 
         return ModuleContext
 

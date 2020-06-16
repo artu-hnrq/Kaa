@@ -1,19 +1,10 @@
 from .. import utils
-import setuptools.command.build_py
-from distutils.cmd import Command
+from distutils import cmd
+import os
 
-
-class BuildPyCommand(setuptools.command.build_py.build_py):
-    def run(self):
-        self.run_command('attack')
-        setuptools.command.build_py.build_py.run(self)
-
-
-class Attack(Command):
-    # description = 'run Pylint on Python source files'
-    user_options = [
-      # The format is (long option, short option, description).
-    ]
+class Attack(cmd.Command):
+    description = 'Run all functions declared in the kaa.attack entry point group'
+    user_options = []
 
     def initialize_options(self):
         self.fang = utils.package_discovery('kaa.attack')
@@ -25,3 +16,25 @@ class Attack(Command):
         for key, func  in self.fang.items():
             print('kaa attack:', key)
             func()
+
+
+class Shed(cmd.Command):
+    description = 'Bump up package version'
+    user_options = [
+        ('bump=', 'b', 'version bump group'),
+    ]
+
+    def initialize_options(self):
+        self.bump = 'build'
+
+    def finalize_options(self):
+        assert self.bump in [
+            'major', 'minor', 'patch', 'build'
+        ]
+
+    def run(self):
+        os.system(' '.join([
+            "bumpversion",
+            "--allow-dirty",
+            self.bump,
+        ]))

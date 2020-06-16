@@ -1,8 +1,9 @@
 from . import utils
 from . import viper
 import setuptools
+from distutils.cmd import Command
 
-__version__ = '0.0.4'
+__version__ = '0.1.0'
 
 class Pythonidae(type):
     def __new__(meta, name, bases, attr):
@@ -25,9 +26,15 @@ class Kaa(metaclass=Pythonidae):
 def born():
     kaa = Kaa()
 
+    cmdclass = {
+        name.lower(): command
+        for name, command
+        in utils.list_classes(
+            'kaa.viper',
+            _subclass = Command
+        )
+    }
+
     kaa.setup(
-        cmdclass={
-            'build_py': viper.BuildPyCommand,
-            'attack': viper.Attack,
-        }
+        cmdclass = cmdclass
     )

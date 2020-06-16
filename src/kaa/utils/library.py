@@ -1,5 +1,4 @@
 import pkg_resources as pkg
-
 def package_discovery(entry_point_group):
     "Return {name: func} for each entry point in the given group"
 
@@ -8,3 +7,24 @@ def package_discovery(entry_point_group):
         for entry_point
         in pkg.iter_entry_points(entry_point_group)
     }
+
+
+import inspect
+import sys
+def list_classes(module, *filters, _instance=None, _subclass=None):
+    # filters = list(filters)
+    filters = [
+        lambda cls: inspect.isclass(cls),
+        lambda cls: not cls.__name__.startswith('_'),
+        lambda cls: not _instance or isinstance(cls, _instance),
+        lambda cls: not _subclass or issubclass(cls, _subclass),
+    ]
+
+    return inspect.getmembers(
+        sys.modules[module],
+        lambda cls: all(
+            filter(cls)
+            for filter
+            in filters
+        )
+    )
