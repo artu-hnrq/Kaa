@@ -6,3 +6,12 @@ vocabulary:
         "[Kaa is a huge and powerful snake](https://en.wikipedia.org/wiki/Kaa)"
     overview:
         Kaa is a Python package made to simplify Python packing flow, providing some useful development and deployment features.
+
+
+# pre-commit
+repos:
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
+        language_version: python3.8
