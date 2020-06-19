@@ -6,3 +6,12 @@ vocabulary:
         "[Kaa is a huge and powerful snake](https://en.wikipedia.org/wiki/Kaa)"
     overview:
         Kaa is a Python package made to simplify Python packing flow, providing some useful development and deployment features.
+
+options:
+    entry_points:
+        kaa.attack:
+            - flick = kaa.serpent:flick
+        kaa.sections:
+            - head = kaa.serpent.tongue:Head
+            - getting_started = kaa.serpent.tongue:Getting_Started
+            - overview = kaa.serpent.tongue:Overview

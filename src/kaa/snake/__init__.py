@@ -1,4 +1,5 @@
 from .metadata import *
+from .options import *
 from .. import utils
 import yaml
 
@@ -19,3 +20,6 @@ class Vocabulary(metaclass=utils.ContextLoader):
 
     def metadata(self):
         return Metadata.load()
+
+
+Options = utils.ContextBuilder.fromModule("kaa.snake.options")
