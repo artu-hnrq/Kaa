@@ -3,7 +3,7 @@ from .. import utils
 import yaml
 
 
-Metadata = utils.ContextLoader.fromModule('kaa.snake.metadata')
+Metadata = utils.ContextLoader.fromModule("kaa.snake.metadata")
 
 
 class Vocabulary(metaclass=utils.ContextLoader):
@@ -11,7 +11,7 @@ class Vocabulary(metaclass=utils.ContextLoader):
         data = {}
         try:
             with open(f".kaa") as file:
-                data = yaml.load(file.read())["vocabulary"]
+                data = yaml.safe_load(file.read())["vocabulary"]
         except (FileNotFoundError, KeyError):
             return {}
 

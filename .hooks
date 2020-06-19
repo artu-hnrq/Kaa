@@ -1,0 +1,18 @@
+# pre-commit
+default_language_version:
+    python: python3.8
+
+repos:
+  # - repo: local
+  #   hooks:
+  #     - id: test-hook
+  #       name: test-hook
+  #       description: hook description
+  #       language: python
+  #       stages: [commit-msg]
+  #       entry: test_hook
+  #       types: [python]
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
