@@ -69,10 +69,9 @@ class DeclaredLicense(metaclass=utils.ContextBuilder):
 class LibVersion(metaclass=utils.ContextBuilder):
     # TODO generalize it
     def version(self):
-        for line in open(f"src/kaa/__init__.py").read().splitlines():
-            if line.startswith("__version__"):
-                version = line.split("=")[1][1:].strip("'")
-                return version
+        import kaa
+
+        return kaa.__version__
 
 
 class DescriptionFile(metaclass=utils.ContextBuilder):

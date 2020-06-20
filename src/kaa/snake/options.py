@@ -47,7 +47,6 @@ class Entry_Points(metaclass=utils.ContextLoader):
         }
 
     # TODO Automatize declared kaa.wisdom entry_points from kaa.snake module
-
     def wisdom(self):
         return {
             "kaa.wisdom": [
