@@ -15,7 +15,7 @@ class GitHook(metaclass=utils.Methodology):
     @classmethod
     def call(cls):
         name = cls.__name__
-        return f"{cls.entry_name()} = kaa.viper.fangs:{name}.run"
+        return f"{cls.entry_name()} = kaa.viper.fangs:{name}"
 
 
 class Commit_Msg(GitHook):

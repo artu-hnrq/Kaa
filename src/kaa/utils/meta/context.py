@@ -15,32 +15,26 @@ class ContextLoader(Methodology):
     def __new__(meta, name, bases, attr):
         __arrangement__ = attr.pop("__arrangement__", [])
 
-        attr["load"] = classmethod(meta.load)
-
         for name, loader in __arrangement__:
             assert isinstance(loader, ContextLoader) or issubclass(
                 loader, ContextLoader
             )
-            attr[loader.__name__.lower()] = fill_call(loader.load)
+            attr[loader.__name__.lower()] = fill_call(loader)
 
         return super(ContextLoader, meta).__new__(meta, name, bases, attr)
 
-    def __run__(self):
+    def __run__(cls):
         load = {}
-        for stage, procedure in self.__stages__.items():
+        for stage, procedure in cls.__stages__:
             try:
-                for k, v in procedure(self).items():
+                for k, v in procedure(cls).items():
                     load.setdefault(k, v)
             except AttributeError:
                 warnings.warn(
-                    f"{self.__class__.__name__} ContextLoader {stage} stage isn't returning a dictionary",
+                    f"{cls.__name__} ContextLoader {stage} stage isn't returning a dictionary",
                     category=UserWarning,
                 )
-
         return load
-
-    def load(cls):
-        return cls()()
 
     @classmethod
     def fromModule(meta, module):
@@ -50,9 +44,25 @@ class ContextLoader(Methodology):
         return ModuleContext
 
 
+class ContextComposer(ContextLoader):
+    def __run__(cls):
+        load = {}
+        for stage, procedure in cls.__stages__:
+            try:
+                for k, v in procedure(cls).items():
+                    load.setdefault(k, [])
+                    load[k].append(v)
+            except AttributeError:
+                warnings.warn(
+                    f"{cls.__name__} ContextLoader {stage} stage isn't returning a dictionary",
+                    category=UserWarning,
+                )
+        return load
+
+
 class ContextBuilder(ContextLoader):
-    def __run__(self):
-        return {key: value(self) for key, value in self.__stages__.items()}
+    def __run__(cls):
+        return {key: value(cls) for key, value in cls.__stages__}
 
 
 class EntryPointContext(ContextBuilder):
@@ -76,14 +86,12 @@ class EntryPointContext(ContextBuilder):
     @classmethod
     def fromGroup(meta, group):
         return EntryPointContext.__new__(
-            EntryPointContext, "Group", (), {"group": "kaa.defaults"}
+            EntryPointContext, "Group", (), {"group": group}
         )
 
 
 class CascadeLoader(ContextLoader):
     def __new__(meta, name, bases, attr):
-        "Overwrites a target method to behave calling all class declareted methods orderly"
-
         try:
             __precedence__ = attr.pop("__precedence__")
         except AttributeError:
@@ -103,9 +111,14 @@ class CascadeLoader(ContextLoader):
         return super(CascadeLoader, meta).__new__(meta, name, bases, attr)
 
     @classmethod
-    def loader(*precedence, _load):
-        class Loader(metaclass=CascadeLoader):
-            __precedence__ = precedence
-            load = _load
+    def get_declareted_methods(meta, attr):
+        def depurate(target, *restrictions):
+            return {
+                k: v
+                for k, v in target.items()
+                if all([restriction(k, v) for restriction in restrictions])
+            }
 
-        return Loader
+        return depurate(
+            attr, lambda k, v: not k.startswith("_"), lambda k, v: callable(v),
+        )

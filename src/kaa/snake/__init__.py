@@ -1,12 +1,14 @@
 from .metadata import *
 from .options import *
 from .. import utils
+from ..egg import entry_point
 import yaml
 
-
 Metadata = utils.ContextLoader.fromModule("kaa.snake.metadata")
+Options = utils.ContextBuilder.fromModule("kaa.snake.options")
 
 
+@entry_point("kaa.wisdom")
 class Vocabulary(metaclass=utils.ContextLoader):
     def yml(self):
         data = {}
@@ -20,6 +22,3 @@ class Vocabulary(metaclass=utils.ContextLoader):
 
     def metadata(self):
         return Metadata.load()
-
-
-Options = utils.ContextBuilder.fromModule("kaa.snake.options")

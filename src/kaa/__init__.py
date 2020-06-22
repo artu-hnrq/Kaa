@@ -1,9 +1,12 @@
 from . import utils
 from . import viper
 from . import snake
+from .egg import entry_point
 import setuptools
 
-__version__ = "0.2.2"
+__version__ = "0.4.0"
+
+import inspect
 
 
 class Pythonidae(type):
@@ -20,7 +23,20 @@ class Kaa(metaclass=Pythonidae):
     def setup(self, **kwargs):
         return setuptools.setup(**self.metadata(), **self.options(), **kwargs)
 
+    def __repr__(self):
+        attr = [
+            name for name, _ in inspect.getmembers(self) if not name.startswith("_")
+        ]
+
+        return "Kaa({})".format(", ".join(attr))
+
 
 def born():
     kaa = Kaa()
     kaa.setup()
+
+
+@entry_point("console_scripts")
+def egg():
+    kaa = Kaa()
+    print(kaa)

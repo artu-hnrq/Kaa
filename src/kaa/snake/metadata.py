@@ -31,60 +31,58 @@ class _GitInfo(metaclass=utils.ContextBuilder):
 
 
 class GitUserAuthor(_GitInfo):
-    def __init__(self):
-        self.gitconfig = self.repository.config_reader("global")
+    gitconfig = cls.repository.config_reader("global")
 
-    def author(self):
-        return self.gitconfig.get("user", "name")
+    def author(cls):
+        return cls.gitconfig.get("user", "name")
 
-    def author_email(self):
-        email = self.gitconfig.get("user", "email")
-        return f"{self.author()} <{email}>"
+    def author_email(cls):
+        email = cls.gitconfig.get("user", "email")
+        return f"{cls.author(cls)} <{email}>"
 
 
 class RepositoryInfo(_GitInfo):
-    def __init__(self):
-        self.repository = git.Repo()
+    repository = git.Repo()
 
-    def name(self):
-        return self.url().split("/")[1][:-4]
+    def name(cls):
+        return cls.url(cls).split("/")[1][:-4]
 
-    def url(self):
-        return self.repository.remote().url
+    def url(cls):
+        return cls.repository.remote().url
 
 
 class Source(metaclass=utils.ContextBuilder):
-    def packages(self):
+    def packages(cls):
         return setuptools.find_packages(where="src")
 
-    def package_dir(self):
+    def package_dir(cls):
         return {"": "src"}
 
 
 class DeclaredLicense(metaclass=utils.ContextBuilder):
-    def license(self):
+    def license(cls):
         return open("LICENSE").read().splitlines()[0]
 
 
 class LibVersion(metaclass=utils.ContextBuilder):
     # TODO generalize it
-    def version(self):
+    def version(cls):
         import kaa
 
         return kaa.__version__
 
 
 class DescriptionFile(metaclass=utils.ContextBuilder):
-    def long_description(self):
+    def long_description(cls):
         return open("DESCRIPTION.md").read()
 
-    def long_description_content_type(self):
+    def long_description_content_type(cls):
         return "markdown"
 
 
 class Envirionment(metaclass=utils.ContextBuilder):
-    def platforms(self):
+    def platforms(cls):
         return "ANY"
 
-    def python_requires(self):
+    def python_requires(cls):
         return f">={platform.python_version()}"

@@ -21,7 +21,7 @@ def list_classes(module, *filters, _instance=None, _subclass=None, _excludes=Non
         lambda cls: not _instance or isinstance(cls, _instance),
         lambda cls: not _subclass or issubclass(cls, _subclass),
         lambda cls: not _excludes or cls not in _excludes,
-    ]
+    ] + list(filters)
 
     return inspect.getmembers(
         sys.modules[module], lambda cls: all(filter(cls) for filter in filters)

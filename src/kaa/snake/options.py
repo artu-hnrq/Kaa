@@ -1,5 +1,6 @@
 from .. import utils
 from .. import viper
+from ..egg import entry_point
 from distutils.cmd import Command
 import setupcfg
 import yaml
@@ -30,9 +31,9 @@ class _Nest(metaclass=utils.CascadeLoader):
         return data
 
 
-class Entry_Points(metaclass=utils.ContextLoader):
+class Entry_Points(metaclass=utils.ContextComposer):
     def nest(self):
-        return _Nest.load()
+        return _Nest()
 
     def hooks(self):
         return {
@@ -46,18 +47,8 @@ class Entry_Points(metaclass=utils.ContextLoader):
             ]
         }
 
-    # TODO Automatize declared kaa.wisdom entry_points from kaa.snake module
-    def wisdom(self):
-        return {
-            "kaa.wisdom": [
-                # hook.call()
-                # for name, hook in utils.list_classes(
-                #     "kaa.snake",
-                #     _subclass=viper.GitHook,
-                #     _excludes=[viper.GitHook]
-                # )
-            ]
-        }
+    def declared(self):
+        return entry_point.declared
 
 
 class CmdClass(metaclass=utils.ContextLoader):
